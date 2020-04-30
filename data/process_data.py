@@ -4,10 +4,10 @@ from sqlalchemy import create_engine
 
 def load_data(messages_filepath, categories_filepath):
     # load messages dataset
-    messages = pd.read_csv('messages_filepath')
+    messages = pd.read_csv(messages_filepath)
 
     # load categories dataset
-    categories = pd.read_csv('categories_filepath')
+    categories = pd.read_csv(categories_filepath)
 
     # merge datasets
     df = pd.concat([messages, categories.drop('id', axis=1)], axis=1)
