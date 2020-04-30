@@ -48,7 +48,7 @@ def clean_data(df):
 
 
 def save_data(df, database_filename):
-    database_string = "'sqlite:///" + database_filename + "'"
+    database_string = "sqlite:///" + database_filename
     engine = create_engine(database_string)
     df.to_sql('TableName', engine, index=False)
 
