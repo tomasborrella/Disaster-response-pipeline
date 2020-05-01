@@ -1,4 +1,5 @@
 import sys
+import re
 import pandas as pd
 from sqlalchemy import create_engine
 
@@ -9,37 +10,24 @@ def load_data(messages_filepath, categories_filepath):
     # load categories dataset
     categories = pd.read_csv(categories_filepath)
 
-    # merge datasets
-    df = pd.concat([messages, categories.drop('id', axis=1)], axis=1)
+    # merge datasets (deleting id column for categories )
+    df = pd.concat([messages, categories.drop(columns='id')], axis=1)
 
     return df
 
 
 def clean_data(df):
-    # create a dataframe of the 36 individual category columns
-    categories = df.categories.str.split(';', expand=True)
+    # get names for new categories columns
+    # using re to extract category names from first row
+    categories_column_names = re.findall('(\w+)-\d', df['categories'].iloc[0])
 
-    # select the first row of the categories dataframe
-    row = categories.iloc[0]
+    # create a column for each category
+    # using re to extract the numeric value and convert to int
+    df[categories_column_names] = df['categories'].str.replace('\w+-', '').str \
+                                  .split(';', expand=True).astype(int)
 
-    # use this row to extract a list of new column names for categories.
-    category_colnames = row.apply(lambda x: x[:-2])
-
-    # rename the columns of `categories`
-    categories.columns = category_colnames
-
-    # Convert category values to just numbers 0 or 1
-    for column in categories:
-        # set each value to be the last character of the string converted to numeric
-        categories[column] = categories[column].apply(lambda x: int(x[-1]))
-
-    # Replace categories column in df with new category columns
-
-    # drop the original categories column from `df`
-    df.drop('categories', axis=1, inplace=True)
-
-    # concatenate the original dataframe with the new `categories` dataframe
-    df = pd.concat([df, categories], axis=1)
+    # drop column categories, no needed anymore
+    df.drop(columns='categories', inplace=True)
 
     # drop duplicates
     df.drop_duplicates(inplace=True)
@@ -47,10 +35,10 @@ def clean_data(df):
     return df
 
 
-def save_data(df, database_filename):
+def save_data(df, database_filename, table_name='disaster_message_category'):
     database_string = "sqlite:///" + database_filename
     engine = create_engine(database_string)
-    df.to_sql('TableName', engine, index=False)
+    df.to_sql(table_name, engine, index=False)
 
 
 def main():
