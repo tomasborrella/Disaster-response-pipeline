@@ -10,7 +10,7 @@ def load_data(messages_filepath, categories_filepath):
     # load categories dataset
     categories = pd.read_csv(categories_filepath)
 
-    # merge datasets (deleting id column for categories )
+    # merge datasets (deleting id column for categories)
     df = pd.concat([messages, categories.drop(columns='id')], axis=1)
 
     return df
@@ -23,11 +23,18 @@ def clean_data(df):
 
     # create a column for each category
     # using re to extract the numeric value and convert to int
+    # NOTE: there should be only 1 and 0 values,
+    # so I use clip to assign values outside boundary to boundary values
     df[categories_column_names] = df['categories'].str.replace('\w+-', '').str \
-                                  .split(';', expand=True).astype(int)
+                                  .split(';', expand=True).astype(int) \
+                                  .clip(lower=0, upper=1)
 
     # drop column categories, no needed anymore
     df.drop(columns='categories', inplace=True)
+
+    # drop all zeros columns because are not useful for modeling/predicting
+    # the only one in this case is "child_alone"
+    df = df.loc[:, (df != 0).any(axis=0)]
 
     # drop duplicates
     df.drop_duplicates(inplace=True)
