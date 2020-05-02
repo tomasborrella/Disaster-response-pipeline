@@ -130,3 +130,6 @@ dmypy.json
 
 # sqlite databases
 *.db
+
+# pickle objects
+*.pkl
