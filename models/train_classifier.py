@@ -20,7 +20,19 @@ from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from sklearn.model_selection import train_test_split, GridSearchCV
 
 
-def load_data(database_filepath):
+def load_data(database_filepath, table_name='disaster_message_category'):
+    """Extract data from sql database and create features and target dataframes
+
+    Parameters:
+    database_filepath (sting): file path of the sqlite database
+    table_name (string): table name where data is.
+
+    Returns:
+    DataFrame: Dataframe with feature variable (message)
+    DataFrame: Dataframe with target variables (categories)
+    Index: ndarray with all category names
+
+    """
     database_string = "sqlite:///" + database_filepath
     engine = create_engine(database_string)
     df = pd.read_sql_table('disaster_message_category', engine)
@@ -31,6 +43,15 @@ def load_data(database_filepath):
 
 
 def tokenize(text):
+    """Tokenize a text
+
+    Parameters:
+    text (sting): text to be tokenized
+
+    Returns:
+    List: List of tokens
+
+    """
     # normalize case and remove punctuation
     text = re.sub(r"[^a-zA-Z0-9]", " ", text.lower())
 
@@ -46,6 +67,15 @@ def tokenize(text):
 
 
 def build_model():
+    """Build a MultiOutputClassifier model
+
+    Parameters:
+    None
+
+    Returns:
+    Estimator: Complete pipeline and grid seach
+
+    """
     classifier = MultiOutputClassifier(DecisionTreeClassifier(max_depth=5, \
                                                               random_state=42))
 
@@ -65,6 +95,18 @@ def build_model():
 
 
 def evaluate_model(model, X_test, Y_test, category_names):
+    """Evaluate given model: precision, recall, f1-score
+
+    Parameters:
+    model (Estimator): Trained model to be evaluated
+    X_test (DataFrame): Test data: features.
+    Y_test (DataFrame): Test data: target.
+    category_names (ndarray): all category names
+
+    Returns:
+    None. Print evaluation output
+
+    """
     Y_pred = model.predict(X_test)
 
     results_df = pd.DataFrame(
@@ -87,6 +129,16 @@ def evaluate_model(model, X_test, Y_test, category_names):
     print('f1-score (avg):', results_df['recall'].mean().round(3))
 
 def save_model(model, model_filepath):
+    """Save model to pickle file
+
+    Parameters:
+    model (Estimator): Trained model to be saved to picle file
+    model_filepath (string): Path of the pickle file
+
+    Returns:
+    None.
+
+    """
     pickle.dump(model, open(model_filepath, 'wb'))
 
 
