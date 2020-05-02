@@ -6,6 +6,7 @@ import pickle
 from sqlalchemy import create_engine
 
 import nltk
+# downloads only needed the first execution
 # nltk.download(['punkt', 'wordnet','stopwords'])
 from nltk.corpus import stopwords
 from nltk.stem.wordnet import WordNetLemmatizer
@@ -54,7 +55,13 @@ def build_model():
             ('clf', classifier)
     ])
 
-    return pipeline
+    parameters = {'clf__estimator__max_depth': [3, 5],
+                  'clf__estimator__max_leaf_nodes': [10, None]
+                 }
+
+    cv = GridSearchCV(pipeline, parameters, cv=5)
+
+    return cv
 
 
 def evaluate_model(model, X_test, Y_test, category_names):
@@ -67,12 +74,14 @@ def evaluate_model(model, X_test, Y_test, category_names):
     for i, category in enumerate(category_names):
         print("Classification report for", category, "category:")
         print(classification_report(Y_test.iloc[:,i], Y_pred[:,i]))
+        # Creation of dataframe to sumarize metrics average
         precision, recall, f1, _ = precision_recall_fscore_support(
                               Y_test.iloc[:,i], Y_pred[:,i], average='weighted')
         results_df = results_df.append(
                     {'category': category, 'precision': precision.round(3),
                     'recall': recall.round(3), 'f1-score': f1.round(3)},
                     ignore_index=True)
+    # Print metrics average
     print('precision (avg):', results_df['precision'].mean().round(3))
     print('recall (avg):', results_df['recall'].mean().round(3))
     print('f1-score (avg):', results_df['recall'].mean().round(3))
