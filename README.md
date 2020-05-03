@@ -1,6 +1,6 @@
 # Disaster response pipeline
 
-Disaster response pipeline for Udacity Data Science Nanodegree
+Machine learning pipeline to categorize real messages that were sent during disaster events so that you can send the messages to an appropriate disaster relief agency.
 
 ## Instructions
 
@@ -18,10 +18,85 @@ Disaster response pipeline for Udacity Data Science Nanodegree
 
 ## Installations
 
+Project created using:
+```
+Python 3.6.10
+```
+
+Additional packages and versions used:
+```
+pandas 1.0.3
+sqlalchemy 1.3.16
+scikit-learn 0.20.2
+nltk 3.4.5
+plotly 4.6.0
+flask 1.0.2
+```
+
 ## Project Motivation
+
+Project to practice skills acquired in course 4 (Data Engineering) of Udacity Data Scientist Nanodegree Program (ETL, NLP, and machine learning pipelines).
 
 ## File Descriptions
 
+```text
+disaster-response-pipeline/
+├── app/
+│   ├── templates/
+│   │   ├── go.html
+│   │   └── master.html
+│   └── run.py
+├── data/
+│   ├── disaster_categories.csv
+│   ├── disaster_messages.csv
+│   └── process_data.py
+├── images/
+│   ├── dataset_overview.jpg
+│   └── message_classify.jpg
+└── models/
+    └── train_classifier.py
+```
+
+#### 1. ETL Pipeline
+**data** folder contains 2 data files (*disaster_messages.csv* and *disaster_categories.csv*) and a data cleaning pipeline (*process_data.py*) that:
+
+- Loads the messages and categories datasets
+- Merges the two datasets
+- Cleans the data
+- Stores it in a SQLite database
+
+#### 2. Machine Learning Pipeline
+**models** folder contains a Python script (*train_classifier.py*) with a machine learning pipeline that:
+
+- Loads data from the SQLite database
+- Splits the dataset into training and test sets
+- Builds a text processing and machine learning pipeline
+- Trains and tunes a model using GridSearchCV
+- Outputs results on the test set
+- Exports the final model as a pickle file
+
+#### 3. Flask Web App
+**app** folder contains a Flask Web App to:
+
+- Display two visualizations of train data.
+- Uses the trained model to input text and return classification results.
+
+**images** folder it's only for screen captures of the App to be shown in this README.
+
 ## Results
 
+Web App to categorize real messages that were sent during disaster events.
+
+1. Dataset overview
+
+![dataset overview](images/dataset_overview.jpg)
+
+2. Message classification
+
+![message classification](images/message_classify.jpg)
+
 ## Acknowledgements
+
+Disaster data come from [Figure Eight](https://www.figure-eight.com/) (now [appen](https://appen.com/)).
+
+Project idea and guidance comes from [Udacity Data Scientist Nanodegree Program](https://www.udacity.com/course/data-scientist-nanodegree--nd025).
