@@ -42,6 +42,9 @@ Project to practice skills acquired in course 4 (Data Engineering) of Udacity Da
 ```text
 disaster-response-pipeline/
 ├── app/
+│   ├── static/
+│   │   └── images/
+│   │       └── wordcloud.png
 │   ├── templates/
 │   │   ├── go.html
 │   │   └── master.html
@@ -50,9 +53,13 @@ disaster-response-pipeline/
 │   ├── disaster_categories.csv
 │   ├── disaster_messages.csv
 │   └── process_data.py
-├── images/
-│   ├── dataset_overview.jpg
-│   └── message_classify.jpg
+├── docs/
+│   └── images/
+│       ├── dataset_overview.jpg
+│       ├── message_classify.jpg
+│       └── wordcloud.png
+├── helpers/
+│       └── generate_wordcloud.py
 └── models/
     └── train_classifier.py
 ```
@@ -81,7 +88,9 @@ disaster-response-pipeline/
 - Display two visualizations of train data.
 - Uses the trained model to input text and return classification results.
 
-**images** folder it's only for screen captures of the App to be shown in this README.
+**helpers** folder it's for support code. Contains a python script for generating cloudword image.
+
+**docs** folder it's for support files for this README. It contains a image folder with some screen captures of the App.
 
 ## Results
 
@@ -89,11 +98,11 @@ Web App to categorize real messages that were sent during disaster events.
 
 1. Dataset overview
 
-![dataset overview](images/dataset_overview.jpg)
+![dataset overview](docs/images/dataset_overview.jpg)
 
 2. Message classification
 
-![message classification](images/message_classify.jpg)
+![message classification](docs/images/message_classify.jpg)
 
 ## Acknowledgements
 

@@ -57,7 +57,9 @@
             <h1 class="text-center">Overview of Training Dataset</h1>
         </div>
     {% endblock %}
-
+        <div style="display:block; margin:auto;">
+          <img src="static/images/wordcloud.png" alt="Word Cloud">
+        </div>
     {% for id in ids %}
         <div id="{{id}}"></div>
     {% endfor %}

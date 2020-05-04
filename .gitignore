@@ -133,3 +133,7 @@ dmypy.json
 
 # pickle objects
 *.pkl
+
+# autoenv
+.in
+.out

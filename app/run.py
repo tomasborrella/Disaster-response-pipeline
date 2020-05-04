@@ -14,8 +14,9 @@ from plotly.graph_objs import Pie
 from sklearn.externals import joblib
 from sqlalchemy import create_engine
 
-
-app = Flask(__name__)
+app = Flask(__name__,
+            static_folder='static',
+            static_url_path='/static')
 
 def tokenize(text):
     # normalize case and remove punctuation
