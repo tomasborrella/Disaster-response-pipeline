@@ -4,10 +4,9 @@ import pandas as pd
 import sys
 
 from flask import Flask
-from flask import render_template, request, jsonify
-from plotly.graph_objs import Bar
-from plotly.graph_objs import Pie
-from sklearn.externals import joblib
+from flask import render_template, request
+from plotly.graph_objs import Bar, Pie
+import joblib
 from sqlalchemy import create_engine
 
 sys.path.append('../helpers')

@@ -5,8 +5,8 @@ from nltk.stem.wordnet import WordNetLemmatizer
 from nltk.tokenize import word_tokenize
 
 # downloads only needed the first execution
-# import nltk
-# nltk.download(['punkt', 'wordnet', 'stopwords'])
+import nltk
+nltk.download(['stopwords'])
 
 
 def tokenize(text):

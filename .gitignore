@@ -128,12 +128,6 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# sqlite databases
-*.db
-
-# pickle objects
-*.pkl
-
 # autoenv
 .in
 .out

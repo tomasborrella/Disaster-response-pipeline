@@ -4,16 +4,20 @@ Machine learning pipeline to categorize real messages that were sent during disa
 
 ## Instructions
 
-1. Run the following commands in the project's root directory to set up your database and model.
+1. Run the following commands in the project's root directory to set up database and model:
 
     - To run ETL pipeline that cleans data and stores in database
+    
         `python data/process_data.py data/disaster_messages.csv data/disaster_categories.csv data/DisasterResponse.db`
-    - To run ML pipeline that trains classifier and saves
+    - To run ML pipeline that trains classifier and saves it as pickle
+    
         `python models/train_classifier.py data/DisasterResponse.db models/classifier.pkl`
-    - To generate wordcloud image with most relevant words in the training sets
+    - To generate word cloud image with most relevant words in the training sets
+    
         `python helpers/generate_wordcloud.py`
 
-2. Run the following command in the app's directory to run your web app.
+2. Run the following command in the app's directory to run your web app:
+
     `python run.py`
 
 3. Go to http://0.0.0.0:3001/
@@ -29,10 +33,11 @@ Additional packages and versions used:
 ```
 pandas 1.0.3
 sqlalchemy 1.3.16
-scikit-learn 0.20.2
+scikit-learn 0.22.1
 nltk 3.4.5
 plotly 4.6.0
-flask 1.0.2
+flask 1.1.2
+wordcloud 1.7.0
 ```
 
 ## Project Motivation
@@ -54,6 +59,7 @@ disaster-response-pipeline/
 ├── data/
 │   ├── disaster_categories.csv
 │   ├── disaster_messages.csv
+│   ├── DisasterResponse.db
 │   └── process_data.py
 ├── docs/
 │   └── images/
@@ -64,6 +70,7 @@ disaster-response-pipeline/
 │       ├── generate_wordcloud.py
 │       └── utils.py
 └── models/
+    ├── classifier.pkl
     └── train_classifier.py
 ```
 

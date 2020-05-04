@@ -11,7 +11,7 @@ from sklearn.metrics import precision_recall_fscore_support,classification_repor
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from sklearn.model_selection import train_test_split, GridSearchCV
 
-sys.path.append('../helpers')
+sys.path.append('helpers')
 from utils import tokenize
 
 
