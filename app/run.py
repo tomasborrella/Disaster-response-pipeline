@@ -1,11 +1,7 @@
 import json
 import plotly
-import re
 import pandas as pd
-
-from nltk.stem import WordNetLemmatizer
-from nltk.tokenize import word_tokenize
-from nltk.corpus import stopwords
+import sys
 
 from flask import Flask
 from flask import render_template, request, jsonify
@@ -14,23 +10,13 @@ from plotly.graph_objs import Pie
 from sklearn.externals import joblib
 from sqlalchemy import create_engine
 
+sys.path.append('../helpers')
+from utils import tokenize
+
+
 app = Flask(__name__,
             static_folder='static',
             static_url_path='/static')
-
-def tokenize(text):
-    # normalize case and remove punctuation
-    text = re.sub(r"[^a-zA-Z0-9]", " ", text.lower())
-
-    # tokenize text
-    tokens = word_tokenize(text)
-
-    # lemmatize andremove stop words
-    stop_words = stopwords.words("english")
-    lem = WordNetLemmatizer()
-    tokens = [lem.lemmatize(word) for word in tokens if word not in stop_words]
-
-    return tokens
 
 # load data
 engine = create_engine('sqlite:///../data/DisasterResponse.db')
@@ -54,6 +40,17 @@ def index():
     categories_counts = categories_df['count']
     categories_names = categories_df['category']
 
+    df['different_categories'] = df.iloc[:, 4:].sum(axis=1)
+    df_different_categories_volume = (
+        df['different_categories']
+            .value_counts()
+            .reset_index()
+            .rename(columns=dict(index='different_categories', different_categories='volume'))
+    )
+
+    Y = df.drop(columns=['id','message','original','genre'])
+    Y['sum'] = Y[list(Y.columns)].sum(axis=1)
+
     # create visuals
     graphs = [
         {
@@ -65,7 +62,13 @@ def index():
             ],
 
             'layout': {
-                'title': 'Distribution of Message Categories',
+                'title': 'Distribution of message categories',
+                'yaxis': {
+                    'title': "Count"
+                },
+                'xaxis': {
+                    'title': "Category"
+                }
             }
         },
         {
@@ -75,13 +78,32 @@ def index():
                     values=genre_counts
                 )
             ],
+
             'layout': {
-                'title': 'Distribution of Message Genres',
+                'title': 'Distribution of message genres',
                 'yaxis': {
                     'title': "Count"
                 },
                 'xaxis': {
                     'title': "Genre"
+                }
+            }
+        },
+        {
+            'data': [
+                Bar(
+                    x=df_different_categories_volume['different_categories'],
+                    y=df_different_categories_volume['volume']
+                )
+            ],
+
+            'layout': {
+                'title': 'Number of different categories in messages',
+                'yaxis': {
+                    'title': "Number of messages"
+                },
+                'xaxis': {
+                    'title': "Number of categories"
                 }
             }
         }

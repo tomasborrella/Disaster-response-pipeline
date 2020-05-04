@@ -137,3 +137,6 @@ dmypy.json
 # autoenv
 .in
 .out
+
+# idea IDE
+.idea

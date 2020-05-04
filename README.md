@@ -10,6 +10,8 @@ Machine learning pipeline to categorize real messages that were sent during disa
         `python data/process_data.py data/disaster_messages.csv data/disaster_categories.csv data/DisasterResponse.db`
     - To run ML pipeline that trains classifier and saves
         `python models/train_classifier.py data/DisasterResponse.db models/classifier.pkl`
+    - To generate wordcloud image with most relevant words in the training sets
+        `python helpers/generate_wordcloud.py`
 
 2. Run the following command in the app's directory to run your web app.
     `python run.py`
@@ -55,11 +57,12 @@ disaster-response-pipeline/
 │   └── process_data.py
 ├── docs/
 │   └── images/
-│       ├── dataset_overview.jpg
-│       ├── message_classify.jpg
-│       └── wordcloud.png
+│       ├── dataset_overview_1.jpg
+│       ├── dataset_overview_2.jpg
+│       └── message_classify.jpg
 ├── helpers/
-│       └── generate_wordcloud.py
+│       ├── generate_wordcloud.py
+│       └── utils.py
 └── models/
     └── train_classifier.py
 ```
@@ -85,10 +88,10 @@ disaster-response-pipeline/
 #### 3. Flask Web App
 **app** folder contains a Flask Web App to:
 
-- Display two visualizations of train data.
+- Display three visualizations of train data and a word cloud.
 - Uses the trained model to input text and return classification results.
 
-**helpers** folder it's for support code. Contains a python script for generating cloudword image.
+**helpers** folder it's for support code. Contains a python script for generating cloud word image and a utils function (tokenize).
 
 **docs** folder it's for support files for this README. It contains a image folder with some screen captures of the App.
 
@@ -96,13 +99,21 @@ disaster-response-pipeline/
 
 Web App to categorize real messages that were sent during disaster events.
 
-1. Dataset overview
+1. Message classification
 
-![dataset overview](docs/images/dataset_overview.jpg)
+    ![message classification](docs/images/message_classify.jpg)
 
-2. Message classification
+2. Wordcloud of training dataset
 
-![message classification](docs/images/message_classify.jpg)
+    ![wordcloud](app/static/images/wordcloud.png)
+
+3. Overview of training dataset 1
+
+    ![dataset overview](docs/images/dataset_overview_1.jpg)
+
+4. Overview of training dataset 2
+
+    ![dataset overview](docs/images/dataset_overview_2.jpg)
 
 ## Acknowledgements
 

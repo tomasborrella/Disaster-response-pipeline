@@ -1,16 +1,8 @@
 # import libraries
 import sys
 import pandas as pd
-import re
 import pickle
 from sqlalchemy import create_engine
-
-import nltk
-# downloads only needed the first execution
-nltk.download(['punkt', 'wordnet','stopwords'])
-from nltk.corpus import stopwords
-from nltk.stem.wordnet import WordNetLemmatizer
-from nltk.tokenize import word_tokenize
 
 from sklearn.multioutput import MultiOutputClassifier
 from sklearn.tree import DecisionTreeClassifier
@@ -18,6 +10,9 @@ from sklearn.pipeline import Pipeline
 from sklearn.metrics import precision_recall_fscore_support,classification_report
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from sklearn.model_selection import train_test_split, GridSearchCV
+
+sys.path.append('../helpers')
+from utils import tokenize
 
 
 def load_data(database_filepath, table_name='disaster_message_category'):
@@ -40,30 +35,6 @@ def load_data(database_filepath, table_name='disaster_message_category'):
     Y = df.drop(columns=['id','message','original','genre'])
     category_names = Y.columns
     return X, Y, category_names
-
-
-def tokenize(text):
-    """Tokenize a text
-
-    Parameters:
-    text (sting): text to be tokenized
-
-    Returns:
-    List: List of tokens
-
-    """
-    # normalize case and remove punctuation
-    text = re.sub(r"[^a-zA-Z0-9]", " ", text.lower())
-
-    # tokenize text
-    tokens = word_tokenize(text)
-
-    # lemmatize andremove stop words
-    stop_words = stopwords.words("english")
-    lem = WordNetLemmatizer()
-    tokens = [lem.lemmatize(word) for word in tokens if word not in stop_words]
-
-    return tokens
 
 
 def build_model():

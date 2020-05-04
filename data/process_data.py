@@ -3,6 +3,7 @@ import re
 import pandas as pd
 from sqlalchemy import create_engine
 
+
 def load_data(messages_filepath, categories_filepath):
     """Extract data (E from ETL)
     Load messages and categories data from csv files to a dataframe
@@ -48,8 +49,8 @@ def clean_data(df):
     # NOTE: there should be only 1 and 0 values,
     # so I use clip to assign values outside boundary to boundary values
     df[categories_column_names] = df['categories'].str.replace('\w+-', '').str \
-                                  .split(';', expand=True).astype(int) \
-                                  .clip(lower=0, upper=1)
+        .split(';', expand=True).astype(int) \
+        .clip(lower=0, upper=1)
 
     # drop column categories, no needed anymore
     df.drop(columns='categories', inplace=True)
@@ -100,11 +101,11 @@ def main():
         print('Cleaned data saved to database!')
 
     else:
-        print('Please provide the filepaths of the messages and categories '\
-              'datasets as the first and second argument respectively, as '\
-              'well as the filepath of the database to save the cleaned data '\
-              'to as the third argument. \n\nExample: python process_data.py '\
-              'disaster_messages.csv disaster_categories.csv '\
+        print('Please provide the filepaths of the messages and categories ' \
+              'datasets as the first and second argument respectively, as ' \
+              'well as the filepath of the database to save the cleaned data ' \
+              'to as the third argument. \n\nExample: python process_data.py ' \
+              'disaster_messages.csv disaster_categories.csv ' \
               'DisasterResponse.db')
 
 
